@@ -1,29 +1,31 @@
 import sys
-from PyQt5 import QtWidgets
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
+from PyQt5 import QtCore, QtWidgets
 
-
-
+from MPLCanvas import MPLCanvas
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow,self).__init__(*args,**kwargs)
 
-        self.graphWidget = pg.PlotWidget()
-        self.setCentralWidget(self.graphWidget)
-
+        sc = MPLCanvas(self)
+        sc.addYAxis("Acceleration")
+        sc.addYAxis("Velocity")
+        sc.addYAxis("Position","left")
+        sc.addData([[0,1,2,3,4],[10,1,20,3,40],[1,2,3,4,5],[6,7,8,9,10]])
+        sc.plot()
+        self.setCentralWidget(sc)
         hour = [1,2,3,4,5,6,7,8,9,10]
         temperature = [30,32,34,32,33,31,29,32,35,45]
 
-        # plot data: x, y values
-        self.graphWidget.plot(hour, temperature)
+
+        self.show()
+
+
 
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main = MainWindow()
-    main.show()
     sys.exit(app.exec_())
 
 
